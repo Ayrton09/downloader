@@ -1,6 +1,6 @@
 // Paths relative to the game folder.
 // Backslashes are accepted and normalized internally.
-// Paths are case-sensitive; use the exact file and folder casing.
+// File and folder casing is resolved from disk when possible.
 // Spaces are accepted.
 // Valid examples:
 // sound/umbrella/gol.mp3

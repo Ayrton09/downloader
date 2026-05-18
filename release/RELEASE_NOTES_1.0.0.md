@@ -19,5 +19,5 @@ addons/sourcemod/configs/downloader/downloads.txt
 - Edit `addons/sourcemod/configs/downloader/downloads.txt` to list files or directories.
 - Use `sm_reload_downloads` to reload the list during a map.
 - Use `sm_downloader_debug 1` to print each processed file.
-- Paths are case-sensitive; use the exact file and folder casing from the server.
+- File and folder casing is resolved from disk when possible.
 - Spaces are supported in paths.

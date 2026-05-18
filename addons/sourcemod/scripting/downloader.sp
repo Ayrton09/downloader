@@ -56,6 +56,7 @@ int LoadDownloads()
 
     int total;
     char line[PLATFORM_MAX_PATH];
+    char resolvedPath[PLATFORM_MAX_PATH];
 
     while (!file.EndOfFile() && file.ReadLine(line, sizeof(line)))
     {
@@ -73,17 +74,28 @@ int LoadDownloads()
             continue;
         }
 
-        if (DirExists(line))
+        if (!ResolvePathCasing(line, resolvedPath, sizeof(resolvedPath)))
         {
-            total += ProcessDirectory(line);
+            LogError("[Downloader] Path does not exist: %s", line);
+            continue;
         }
-        else if (FileExists(line))
+
+        if (!StrEqual(line, resolvedPath))
         {
-            total += ValidateAndProcessFile(line);
+            LogMessage("[Downloader] Corrected path casing: %s -> %s", line, resolvedPath);
+        }
+
+        if (DirExists(resolvedPath))
+        {
+            total += ProcessDirectory(resolvedPath);
+        }
+        else if (FileExists(resolvedPath))
+        {
+            total += ValidateAndProcessFile(resolvedPath);
         }
         else
         {
-            LogError("[Downloader] Path does not exist: %s", line);
+            LogError("[Downloader] Resolved path is not a file or directory: %s", resolvedPath);
         }
     }
 
@@ -259,6 +271,97 @@ bool IsValidRelativePath(const char[] path)
 void NormalizeDownloadPath(char[] path, int maxlen)
 {
     ReplaceString(path, maxlen, "\\", "/", false);
+}
+
+bool ResolvePathCasing(const char[] path, char[] resolvedPath, int maxlen)
+{
+    char remaining[PLATFORM_MAX_PATH];
+    char segment[PLATFORM_MAX_PATH];
+    char current[PLATFORM_MAX_PATH];
+    char parent[PLATFORM_MAX_PATH];
+
+    strcopy(remaining, sizeof(remaining), path);
+    parent[0] = '\0';
+
+    int split;
+    while ((split = SplitString(remaining, "/", segment, sizeof(segment))) != -1)
+    {
+        if (segment[0] == '\0' || !ResolvePathSegment(parent, segment, current, sizeof(current)))
+        {
+            return false;
+        }
+
+        strcopy(parent, sizeof(parent), current);
+        strcopy(remaining, sizeof(remaining), remaining[split]);
+    }
+
+    if (remaining[0] == '\0' || !ResolvePathSegment(parent, remaining, current, sizeof(current)))
+    {
+        return false;
+    }
+
+    strcopy(resolvedPath, maxlen, current);
+    return true;
+}
+
+bool ResolvePathSegment(const char[] parent, const char[] segment, char[] resolvedPath, int maxlen)
+{
+    char exactPath[PLATFORM_MAX_PATH];
+    BuildChildPath(parent, segment, exactPath, sizeof(exactPath));
+
+    if (FileExists(exactPath) || DirExists(exactPath))
+    {
+        strcopy(resolvedPath, maxlen, exactPath);
+        return true;
+    }
+
+    char openPath[PLATFORM_MAX_PATH];
+    if (parent[0] == '\0')
+    {
+        strcopy(openPath, sizeof(openPath), ".");
+    }
+    else
+    {
+        strcopy(openPath, sizeof(openPath), parent);
+    }
+
+    DirectoryListing listing = OpenDirectory(openPath);
+    if (listing == null)
+    {
+        return false;
+    }
+
+    FileType type;
+    char entry[PLATFORM_MAX_PATH];
+
+    while (listing.GetNext(entry, sizeof(entry), type))
+    {
+        if (StrEqual(entry, ".") || StrEqual(entry, ".."))
+        {
+            continue;
+        }
+
+        if (StrEqual(entry, segment, false))
+        {
+            BuildChildPath(parent, entry, resolvedPath, maxlen);
+            delete listing;
+            return true;
+        }
+    }
+
+    delete listing;
+    return false;
+}
+
+void BuildChildPath(const char[] parent, const char[] child, char[] path, int maxlen)
+{
+    if (parent[0] == '\0')
+    {
+        strcopy(path, maxlen, child);
+        return;
+    }
+
+    Format(path, maxlen, "%s/%s", parent, child);
 }
 
 bool HasExtension(const char[] path, const char[] extension)
