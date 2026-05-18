@@ -1,0 +1,7 @@
+// Paths relative to the game folder.
+// Backslashes are accepted and normalized internally.
+// Valid examples:
+// sound/umbrella/gol.mp3
+// models\player\custom_skin\model.mdl
+// models/player/custom_skin
+// materials/models/player/custom_skin

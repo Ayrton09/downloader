@@ -1,0 +1,12 @@
+# SourceMod build outputs
+*.smx
+
+# Local release artifacts
+/release/*.zip
+/release/downloader-*/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
