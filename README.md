@@ -1,6 +1,6 @@
 # Downloader
 
-SourceMod plugin for Source engine game servers that loads a download list on map start, adds files to the downloads table, and precaches supported assets.
+Recursive download and precache manager for SourceMod servers. Loads configured files and folders on map start, adds them to the download table, and precaches supported assets.
 
 ## Features
 
