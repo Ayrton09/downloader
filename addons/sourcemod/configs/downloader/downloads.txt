@@ -1,8 +1,10 @@
 // Paths relative to the game folder.
 // Backslashes are accepted and normalized internally.
 // Paths are case-sensitive; use the exact file and folder casing.
+// Spaces are accepted.
 // Valid examples:
 // sound/umbrella/gol.mp3
+// sound/umbrella/goal sound.mp3
 // models\player\custom_skin\model.mdl
 // models/player/custom_skin
 // materials/models/player/custom_skin

@@ -17,6 +17,7 @@ Recursive download and precache manager for SourceMod servers. Loads configured 
   - `.phy`
 - Precaches `.mp3` and `.wav` files under `sound/`.
 - Accepts backslashes in `downloads.txt` and normalizes them to forward slashes internally.
+- Accepts spaces in file and folder names.
 - Treats paths as case-sensitive; use the exact file and folder casing from the server.
 - Rejects absolute paths, parent-directory paths, and paths with drive letters.
 
@@ -54,11 +55,15 @@ Each non-empty line must be a file or directory path relative to the game folder
 
 Paths are case-sensitive. `models/player/model.mdl` and `models/player/Model.mdl` are treated as different paths.
 
+Spaces are supported directly.
+
 Examples:
 
 ```text
 sound/umbrella/gol.mp3
+sound/umbrella/goal sound.mp3
 models\player\custom_skin\model.mdl
+models/player/custom skin/model.mdl
 models/player/custom_skin
 materials/models/player/custom_skin
 ```
