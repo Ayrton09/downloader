@@ -9,5 +9,5 @@
 - Added automatic model companion file registration.
 - Added sound precache support for files under `sound/`.
 - Added path normalization for backslashes.
+- Added exact case-sensitive path and extension handling.
 - Added reload admin command and debug ConVar.
-

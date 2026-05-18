@@ -221,7 +221,7 @@ int AddModelCompanionFiles(const char[] modelPath)
 
 void PrecacheSoundFile(const char[] path)
 {
-    if (!StartsWith(path, "sound/", false))
+    if (!StartsWith(path, "sound/"))
     {
         LogError("[Downloader] Sound not precached; it must be under sound/: %s", path);
         return;
@@ -269,7 +269,7 @@ bool HasExtension(const char[] path, const char[] extension)
         return false;
     }
 
-    return StrEqual(path[dot], extension, false);
+    return StrEqual(path[dot], extension);
 }
 
 bool StartsWith(const char[] text, const char[] prefix, bool caseSensitive = true)
