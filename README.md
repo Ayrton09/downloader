@@ -33,7 +33,6 @@ Expected installed files:
 
 ```text
 addons/sourcemod/plugins/downloader.smx
-addons/sourcemod/scripting/downloader.sp
 addons/sourcemod/configs/downloader/downloads.txt
 ```
 
