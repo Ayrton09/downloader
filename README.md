@@ -25,12 +25,6 @@ Recursive download and precache manager for SourceMod servers. Loads configured 
 
 - SourceMod 1.12+
 
-## Compatibility
-
-The plugin only uses APIs included with SourceMod, so it is intended for SourceMod-supported Source engine games.
-
-It is currently packaged from a Counter-Strike: Source workspace. Game-specific behavior can still vary by engine branch, especially sound handling.
-
 ## Installation
 
 Copy the `addons` folder into your game server root.
