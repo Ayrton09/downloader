@@ -1,0 +1,35 @@
+name: Compile
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download SourceMod 1.12
+        run: |
+          mkdir -p "$RUNNER_TEMP/sm"
+          archive=$(curl -sSfL "https://sm.alliedmods.net/smdrop/1.12/sourcemod-latest-linux")
+          echo "Using $archive"
+          curl -sSfL "https://sm.alliedmods.net/smdrop/1.12/$archive" | tar -xz -C "$RUNNER_TEMP/sm"
+
+      - name: Compile downloader.sp
+        run: |
+          scripting="$RUNNER_TEMP/sm/addons/sourcemod/scripting"
+          chmod +x "$scripting/spcomp"
+          "$scripting/spcomp" \
+            -i "$scripting/include" \
+            -o "$RUNNER_TEMP/downloader.smx" \
+            -E \
+            addons/sourcemod/scripting/downloader.sp
+
+      - name: Upload plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: downloader.smx
+          path: ${{ runner.temp }}/downloader.smx
