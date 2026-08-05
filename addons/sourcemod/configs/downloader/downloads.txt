@@ -2,6 +2,9 @@
 // Backslashes are accepted and normalized internally.
 // File and folder casing is resolved from disk when possible.
 // Spaces are accepted.
+// List the narrowest folder holding your custom content.
+// Do not list ".", "cfg" or "addons": every file below a listed
+// folder is offered to clients and counts against the engine limit.
 // Valid examples:
 // sound/umbrella/gol.mp3
 // sound/umbrella/goal sound.mp3
