@@ -64,7 +64,7 @@ models/player/custom_skin
 materials/models/player/custom_skin
 ```
 
-List the narrowest folder that holds your custom content. Everything below a listed folder is offered to clients, so an entry like `cfg` or `addons` would expose server configuration and flood the engine string table. Paths that resolve to the game folder root are rejected outright.
+List the narrowest folder that holds your custom content. Every file below a listed folder is offered to clients and takes a slot in the engine string table, so an entry like `cfg` or `addons` adds thousands of files that no client needs. Paths that resolve to the game folder root are rejected outright.
 
 ## Commands
 
@@ -86,17 +86,11 @@ sm_downloader_debug 0
 
 Set to `1` to print each processed file to the server console.
 
-```text
-sm_downloader_max_files 8192
-```
-
-Maximum number of files added to the download table per load. Set to `0` for no limit.
-
-Both ConVars are written to `cfg/sourcemod/downloader.cfg` on first run.
+The ConVar is written to `cfg/sourcemod/downloader.cfg` on first run.
 
 ## Limits
 
-Directory recursion stops after 16 nested levels, and each load stops after `sm_downloader_max_files` files. Both are safety nets against symlink loops and over-broad entries; normal custom content stays far below them. Reaching either one is written to the SourceMod error log.
+There is no limit on how many files a load can add. Directory recursion stops after 16 nested levels, which is a safety net against symlink loops rather than a cap on content; real content trees are only a few levels deep. Reaching it is written to the SourceMod error log.
 
 ## License
 

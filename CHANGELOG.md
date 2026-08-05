@@ -4,7 +4,6 @@
 
 - Rejected paths that resolve to the game folder root, which previously added every server file to the download table.
 - Limited directory recursion to 16 levels to stop symlink loops.
-- Added `sm_downloader_max_files` to cap how many files a single load can add.
 - Fixed path casing resolution being skipped on case-insensitive filesystems.
 - Accepted trailing slashes, duplicate slashes and `.` segments in `downloads.txt` instead of reporting them as missing paths.
 - Cached resolved path segments so repeated directory lookups are done once per load.

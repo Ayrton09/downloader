@@ -17,7 +17,7 @@ addons/sourcemod/configs/downloader/downloads.txt
 ## Changes
 
 - Paths that resolve to the game folder root are rejected.
-- Directory recursion is limited to 16 levels, and `sm_downloader_max_files` caps how many files a single load can add.
+- Directory recursion is limited to 16 levels, as a safety net against symlink loops. There is no limit on how many files a load can add.
 - Path casing is resolved on case-insensitive filesystems as well.
 - Trailing slashes, duplicate slashes and `.` segments are normalized instead of reported as missing paths.
 - The `sound/` prefix check is case-insensitive.

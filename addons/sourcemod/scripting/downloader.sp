@@ -7,10 +7,8 @@
 #define MAX_DIRECTORY_DEPTH 16
 
 ConVar g_cvDebug;
-ConVar g_cvMaxFiles;
 StringMap g_smProcessed;
 StringMap g_smResolved;
-bool g_bLimitReached;
 
 public Plugin myinfo =
 {
@@ -25,7 +23,6 @@ public void OnPluginStart()
 {
     RegAdminCmd("sm_reload_downloads", Command_ReloadDownloads, ADMFLAG_CONFIG);
     g_cvDebug = CreateConVar("sm_downloader_debug", "0", "1 = Prints every processed file to the server console.", _, true, 0.0, true, 1.0);
-    g_cvMaxFiles = CreateConVar("sm_downloader_max_files", "8192", "Maximum files added to the download table per load. 0 = no limit.", _, true, 0.0);
     AutoExecConfig(true, "downloader");
 
     g_smProcessed = new StringMap();
@@ -49,7 +46,6 @@ int LoadDownloads()
 {
     g_smProcessed.Clear();
     g_smResolved.Clear();
-    g_bLimitReached = false;
 
     char configPath[PLATFORM_MAX_PATH];
     BuildPath(Path_SM, configPath, sizeof(configPath), "configs/downloader/downloads.txt");
@@ -71,7 +67,7 @@ int LoadDownloads()
     char line[PLATFORM_MAX_PATH];
     char resolvedPath[PLATFORM_MAX_PATH];
 
-    while (!g_bLimitReached && !file.EndOfFile() && file.ReadLine(line, sizeof(line)))
+    while (!file.EndOfFile() && file.ReadLine(line, sizeof(line)))
     {
         if (IsTruncatedLine(line, sizeof(line)))
         {
@@ -146,7 +142,7 @@ int ProcessDirectory(const char[] dir, int depth)
     char entry[PLATFORM_MAX_PATH];
     char fullPath[PLATFORM_MAX_PATH];
 
-    while (!g_bLimitReached && listing.GetNext(entry, sizeof(entry), type))
+    while (listing.GetNext(entry, sizeof(entry), type))
     {
         if (StrEqual(entry, ".") || StrEqual(entry, ".."))
         {
@@ -200,18 +196,6 @@ int AddDownload(const char[] path)
 {
     if (g_smProcessed.ContainsKey(path))
     {
-        return 0;
-    }
-
-    int limit = g_cvMaxFiles.IntValue;
-    if (limit > 0 && g_smProcessed.Size >= limit)
-    {
-        if (!g_bLimitReached)
-        {
-            g_bLimitReached = true;
-            LogError("[Downloader] Limit of %d files reached; the rest of downloads.txt was ignored. Narrow the list or raise sm_downloader_max_files.", limit);
-        }
-
         return 0;
     }
 
