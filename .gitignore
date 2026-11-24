@@ -5,8 +5,42 @@
 /release/*.zip
 /release/downloader-*/
 
-# OS/editor files
+# Private keys and certificates
+*.pem
+*.key
+*.pfx
+*.p12
+*.ppk
+id_rsa*
+id_ed25519*
+
+# Environment files and credentials
+.env
+.env.*
+!.env.example
+*credentials*
+*secret*
+*token*
+*password*
+
+# Local databases, logs and backups
+*.db
+*.sqlite
+*.sqlite3
+*.sq3
+*.db-journal
+*.sqlite-journal
+*.log
+*.bak
+*.tmp
+
+# Assistant and editor folders
+.claude/
+.vs/
+.idea/
+.vscode/
+
+# OS files
 .DS_Store
 Thumbs.db
-*.tmp
-*.bak
+desktop.ini

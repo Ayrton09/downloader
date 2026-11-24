@@ -1,13 +1,15 @@
-// Paths relative to the game folder.
+// Paths relative to the game folder, one per line.
+// Lines starting with //, # or ; are comments.
+// A " //" after a path starts a comment for the rest of the line.
 // Backslashes are accepted and normalized internally.
 // File and folder casing is resolved from disk when possible.
 // Spaces are accepted.
 // List the narrowest folder holding your custom content.
-// Do not list ".", "cfg" or "addons": every file below a listed
-// folder is offered to clients and counts against the engine limit.
+// Server-side folders (addons, cfg, bin, logs, ...) are rejected, and
+// server-side file types (.cfg, .sq3, .smx, ...) are never offered.
 // Valid examples:
 // sound/umbrella/gol.mp3
-// sound/umbrella/goal sound.mp3
+// sound/umbrella/goal sound.mp3   // goal horn
 // models\player\custom_skin\model.mdl
 // models/player/custom_skin
 // materials/models/player/custom_skin
